@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Page</title>
+    <style>
+        body {
+            background-color: #F3F8FF;
+            font-family: Arial, sans-serif;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        .my-5 {
+            margin-top: 3rem;
+            margin-bottom: 3rem;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        .col-12 {
+            width: 100%;
+            text-align: center;
+        }
+        .col-6 {
+            width: 48%;
+            float: left;
+            box-sizing: border-box;
+            padding: 0 15px;
+            margin-right: 4%;
+        }
+        .col-6:last-child {
+            margin-right: 0;
+        }
+        .card {
+            background-color: #fff;
+            
+            padding: 70px;
+            
+            margin-top: 160px;
+            border-radius: 55px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2), 0 20px 40px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+        }
+        .col-75 {
+            width: 67%;
+            float: left;
+            box-sizing: border-box;
+            
+            padding-left: 140px;
+            color: #4A4A4A;
+            font-size: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center content vertically */
+            position: relative;
+        }
+        .col-10 {
+            width: 10%;
+            float: left;
+
+            box-sizing: border-box;
+            padding: 0 15px;
+            display: flex;
+            margin-top: 30;
+            flex-direction: column;
+            justify-content: center; /* Center content vertically */
+            align-items: center; /* Center items horizontally */
+            padding-top: 8px;
+        }
+        .col-15 {
+            width: 23%;
+            float: left;
+            box-sizing: border-box;
+            
+            display: flex;
+            margin-top: 30;
+            flex-direction: column;
+            justify-content: center; /* Center content vertically */
+            align-items: center; /* Center items horizontally */
+        }
+        .col-15 p {
+            font-size: 30px;
+            margin: 0;
+            text-align: center; /* Center text horizontally */
+            margin-top: 40px;
+        }
+        .svg-icon {
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            align-items: end;
+            height: 100%; /* Ensure the SVG container takes full height */
+            margin-top: -90px;
+            
+        }
+        .svg-icon svg {
+            height: 100%; /* Ensure the SVG itself takes full height */
+            align-items: end;
+            margin-left: 25px;
+        }
+        .maps {
+
+            margin-top: 27px;
+            color: #4A4A4A;
+        background-color: #F3F8FF;
+        padding: 10px;
+        border: 1px solid #4A4A4A; 
+        padding-left: 30px;
+        padding-right: 30px;
+        text-align: center; /* Align text content to center */
+        text-decoration: underline;
+        border-radius: 15px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+        }
+
+        .maps a {
+            color: #4A4A4A;
+        font-size: 30px;
+        
+        }
+
+        .maps a:hover {
+        color: blue;
+        text-decoration: underline; /* Add underline on hover */
+        }
+
+        .absolute-element {
+            position: absolute;
+            top:120px;
+            left: 110px;
+            
+
+            
+            
+        }
+        .absolute-element2 {
+            position: absolute;
+            top:110px;
+            left: -15px;
+            
+
+            
+            
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 style="font-size: 90px; color: #101828;">Your Trip Report</h1>
+                <h2 style="color: #605F5F; font-size: 70px; font-weight: 200;">Trip / Tour name:  <%= tripData.tripName %></h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="font-size: 45px; color: #6C6C6C;">
+        <div class="row">
+            <div class="col-6">
+                <p>Creator Name: <%= tripData.creatorName %></p>
+                <p>Trip Country: <%= tripData.countryName %></p>
+                <p>Starting Date: <%= new Date(tripData.date).toLocaleDateString() %></p>
+            </div>
+            <div class="col-6" style="padding-left: 100px;">
+                <p>No of days: <%= tripData.days.length %></p>
+                <p>No of Nights: <%= tripData.numNights %></p>
+                <p>No of People: <%= tripData.numPeople %></p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    
+<% tripData.days.forEach((day, index) => { %>
+    <div style="margin-left: 100px; margin-right: 100px;">
+        <div class="card">
+            <h1 style="font-size: 67px; color: #605F5F; margin-left: 70px;">Day <%= day.day %>:</h1>
+
+    <% day.places.forEach(place => { %>
+
+            <div class="row">
+
+                <div class="col-75">
+                    <ul style="">
+                        <li>
+                            <p><%= place.description %></p>
+                        </li>
+                    </ul>
+
+                    <% if (place.distance && place.distance.text) { %>
+
+                    <div class="absolute-element">
+                        <!-- Content for the absolutely positioned div goes here -->
+                        <svg width="24" height="105" viewBox="0 0 24 105" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14.155 20.807H10.228L10.228 0.458L14.155 0.458L14.155 20.807ZM14.155 48.8968H10.228L10.228 28.5478H14.155L14.155 48.8968ZM14.155 76.9867H10.228L10.228 56.6377H14.155L14.155 76.9867ZM23.845 86.5635L23.845 92.4285L12.166 104.771L0.436 92.4285V86.5635L12.166 98.9055L23.845 86.5635Z" fill="#4A4A4A"/>
+                            </svg>                                                        
+                    </div>
+                    <div class="absolute-element2">
+                        <!-- Content for the absolutely positioned div goes here -->
+                        <p style="font-size: 30px;"><%= place.distance.text %></p>
+                    </div>
+
+                    <% } %>
+                </div>
+
+
+                <div class="col-10">
+                    <div class="svg-icon">
+                        <svg width="78" height="25" viewBox="0 0 78 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21.307 10.345V14.272H0.958V10.345H21.307ZM49.3968 10.345V14.272H29.0478V10.345H49.3968ZM58.9737 0.654999H64.8387L77.1807 12.334L64.8387 24.064H58.9737L71.3157 12.334L58.9737 0.654999Z" fill="#4A4A4A"/>
+                            </svg>  
+                    </div>
+                </div>
+
+                <div class="col-15 maps">
+                    <a href="https://www.google.com/maps/search/?api=1&query=Google&query_place_id=<%= place.place_id %>" class="place-link" target="_blank">View Location in Maps</a>
+                </div>
+                
+
+            </div>
+            <% }); %>
+
+
+        </div>
+    </div>
+    <% }); %>
+
+
+
+
+
+
+    
+    <h1 style="font-size: 65px; color: #494949; margin-left: 140px; margin-top: 300px;">More about the Places you visit</h1>
+    
+<% tripData.days.forEach((day, index) => { %>
+
+    <div  class="card" style="margin-left: 100px; margin-right: 100px; color: #4A4A4A;">
+        <h1 style="font-size: 55px; color: #605F5F; ">Day <%= day.day %>:</h1>
+
+    <% day.places.forEach(place => { %>
+            <div class="row">
+                <div >
+                    <ul style="font-size: 40px; ">
+                        <li>
+                            <p style="font-weight:900;"><%= place.description %></p>
+                            <p><span style="font-weight: 600;"> About : </span><%= place.about%></p>
+                            <p><span style="font-weight: 600;"> Uniqueness : </span><%= place.uniqueness %></p>
+                            <p><span style="font-weight: 600;"> Must try : </span><%= place.mustTry %></p>
+                            
+                        </li>
+                    </ul>
+
+                    <% if (place.distance && place.distance.text) { %>
+
+
+                    <% } %>
+                </div>
+
+
+               
+
+            </div>
+            <% }); %>
+
+        </div>
+    </div>
+</div>
+
+
+    <% }); %>
+    
+  
+
+
+
+
+
+
+    <div style="width: 100 ;  display: flex; justify-content: center; ">
+
+
+    
+            <div style="display: flex; justify-items: center; align-items: center;">
+                <% if (img1 !== 'No') { %>
+                    <p style="font-size: 65px; color: #494949; margin-left: 140px; margin-top: 150px; font-weight: bold;">Travel-to Tickets :</p>
+
+                    <img src="<%= img1 %>" alt="Image 1" style="width: 1400px;  object-fit:contain; margin: 0 100px ; border-radius: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2), 0 20px 40px rgba(0, 0, 0, 0.1); /* Enhanced shadow */" >
+                <% }%>
+            </div>
+            
+                
+            <% if (img2 !== 'No') { %>
+                <p style="font-size: 65px; color: #494949; margin-left: 140px; margin-top: 150px; font-weight: bold;">Travel-back Tickets : </p> 
+                <img src="<%= img2 %>" alt="Image 2" style="width: 1400px;  object-fit: contain; margin: 0 100px ; border-radius: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2), 0 20px 40px rgba(0, 0, 0, 0.1); /* Enhanced shadow */" >
+            <% }%>
+            
+
+
+    </div>
+            
+
+
+    
+
+    
+</body>
+</html>
