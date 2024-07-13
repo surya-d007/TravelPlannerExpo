@@ -807,6 +807,39 @@ app.post('/login', async (req, res) => {
 });
 
 
+
+app.post('/change-password', async (req, res) => {
+  console.log("change-password");
+  const { email, newPassword } = req.body;
+
+  try {
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+
+    // Validate new password (minimum 8 characters)
+    if (newPassword.length < 8) {
+      return res.status(400).json({ error: 'New password must be at least 8 characters long' });
+    }
+
+    // Hash new password and update user
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedNewPassword;
+    await user.save();
+
+    res.status(200).json({ message: 'Password changed successfully' });
+  } catch (error) {
+    console.error('Error changing password:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
+
+
 app.post('/checkV', async (req, res) => {
   console.log("log");
   const { email } = req.body;
