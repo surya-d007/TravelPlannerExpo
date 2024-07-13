@@ -13,7 +13,7 @@ const s3Client = new S3Client({ region: "ap-south-1" });
 const cors = require('cors');
 
 
-
+const nodemailer = require('nodemailer');
 
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -144,6 +144,39 @@ const storage = multer.diskStorage({
   });
   
   
+
+
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+  });
+  
+  const sendMail = (to, subject, text, callback) => {
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: to,
+      subject: subject,
+      text: text
+    };
+  
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+        callback(error, null);
+      } else {
+        console.log('Email sent: ' + info.response);
+        callback(null, info.response);
+      }
+    });
+  };
+
+
+
+
 
 
 
@@ -340,78 +373,6 @@ async function processTripData(tripData) {
   //console.log("final  " + "     " + JSON.stringify(mergedTripData, null, 2));
     return mergedTripData;
 }
-
-// app.post('/api/GenerateReport', async (req, res) => {
-//     console.log('hi');
-//     var tripData = req.body.tripData;
-//     const userId = req.body.userId || "snone";
-//     console.log("ninde :" + req.body.imgInServer1 + " " + req.body.imgInServer2);
-
-//     try {
-//         const result = await processTripData(tripData);
-//         console.log( JSON.stringify(result, null, 2));
-//         tripData = result;
-
-//         const img1 = req.body.imgInServer1 || false;
-//         const img2 = req.body.imgInServer2 || false;
-//         // Render the EJS template to HTML with trip data
-//           const name = `${userId}_${tripData.tripName}`;
-//             const OutputFileName = `${name}.pdf`
-
-
-//         app.render('template', { tripData , img1: img1 ? `http://192.168.29.253:3000/uploads/${img1}` : 'No', img2: img2 ? `http://192.168.29.253:3000/uploads/${img2}` : 'No'  }, (err, html) => {
-//             if (err) {
-//               console.log('error1');
-//                 res.status(500).send('Error rendering template');
-//                 return;
-//             }
-    
-//             // PDF options
-//             const options = {
-//                 format: 'A4',
-//                 border: '0mm',
-//             };
-    
-//             options.width = '210mm'; // Width of A4
-//             options.height = '897mm'; // Height of A4
-
-
-          
-            
-//             // Generate PDF from HTML
-//             await new Promise((resolve, reject) => {
-//             pdf.create(html, options).toFile(path.join(__dirname, 'public', OutputFileName), (err, result) => {
-//                 if (err) {
-//                     console.log('error2');
-//                     res.status(500).send('Error generating PDF');
-//                     return;
-//                 }
-//             });}); 
-          
-//           });
-
-
-            
-
-//             if (!OutputFileName) {
-//               return res.status(400).json({ error: "File name is required" });
-//             }
-//             try {
-//               const location = await uploadFile(OutputFileName);
-//               res.status(200).json({ message: "File upload successful", location });
-//             } catch (err) {
-//               console.log('error3');
-//               res.status(500).json({ error: "Error uploading file" });
-//             }
-
-        
-//     } catch (error) {
-//       console.log('error4');
-//       console.log(error.message);
-//       console.log(error);
-//         res.status(500).send(error.message);
-//     }
-// });
 
 const generateRandomNumber = () => {
   return Math.floor(1000000000 + Math.random() * 9000000000).toString();
@@ -814,7 +775,12 @@ app.post('/register', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+
 // Assuming this is part of your /login endpoint
+
+
+
 app.post('/login', async (req, res) => {
   console.log("log");
   const { email, password } = req.body;
@@ -890,6 +856,72 @@ app.get('/z', (req, res) => {
   console.log("h");
   res.send('Hi, I am Su     r ya');
 });
+
+
+
+
+
+app.post('/send-email', (req, res) => {
+  const { to, subject, text } = req.body;
+
+  sendMail(to, subject, text, (error, response) => {
+    if (error) {
+      res.status(500).send('Error sending email');
+    } else {
+      res.status(200).send('Email sent successfully');
+    }
+  });
+});
+
+const crypto = require('crypto');
+function generateRandomPassword(length) {
+  return crypto.randomBytes(length).toString('hex').slice(0, length);
+}
+
+
+app.post('/forgot-password',async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required' });
+  }
+
+  // Check if user exists
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  // Generate a random password
+  const newPassword = generateRandomPassword(10);
+  
+  // Hash the new password
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  // Update the user's password in the database
+  user.password = hashedPassword;
+  await user.save();
+
+
+  
+
+  sendMail(email, "ur new password", `youu new pass ${newPassword}`, (error, response) => {
+    if (error) {
+      res.status(500).send('Error sending email');
+    } else {
+      res.status(200).send('Email sent successfully');
+    }
+  });
+
+
+
+  // Send email with new password
+  console.log(`New password for ${email}: ${newPassword}`);
+  // await sendMail(email, 'Your New Password', `Your new password is: ${newPassword}`);
+
+  res.status(200).send('New password sent to your email');
+});
+
 
 
 
