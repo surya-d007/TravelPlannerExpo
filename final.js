@@ -381,8 +381,9 @@ const generateRandomNumber = () => {
 
 app.post('/api/GenerateReport', async (req, res) => {
   
-  console.log('hi');
+  
   let tripData = req.body.tripData;
+  
   const userId = req.body.userId || "snone";
   console.log("ninde :" + req.body.imgInServer1 + " " + req.body.imgInServer2);
   console.log('nidne    ' + req.body.userEmail );
@@ -392,12 +393,17 @@ app.post('/api/GenerateReport', async (req, res) => {
     //console.log(JSON.stringify(result, null, 2));
     tripData = result;
 
+    const costEstimation = calculateTotalCost(tripData, 12.5 , 4000, 1000);
+    console.log("shdgsfxbvsdfvsdfxcv sbdfvxsdfvsdfvndsfvnsdkfvnkjsdfkjvnkjfsdvknfdksvkfnj");
+    console.log(JSON.stringify(costEstimation, null, 2));
+    console.log("shdgsfxbvsdfvsdfxcv sbdfvxsdfvsdfvndsfvnsdkfvnkjsdfkjvnkjfsdvknfdksvkfnj");
+
     const img1 = req.body.imgInServer1 || false;
     const img2 = req.body.imgInServer2 || false;
     const name = `${tripData.tripName}_${req.body.userEmail}_${generateRandomNumber()}`;
     const OutputFileName = `${name}.pdf`;
 
-    app.render('template', { tripData, img1: img1 ? `http://192.168.29.253:3000/uploads/${img1}` : 'No', img2: img2 ? `http://192.168.29.253:3000/uploads/${img2}` : 'No' }, async (err, html) => {
+    app.render('template', {costEstimation , tripData, img1: img1 ? `http://192.168.29.253:3000/uploads/${img1}` : 'No', img2: img2 ? `http://192.168.29.253:3000/uploads/${img2}` : 'No' }, async (err, html) => {
       if (err) {
         console.log('error1');
         return res.status(500).send('Error rendering template');
@@ -435,7 +441,7 @@ app.post('/api/GenerateReport', async (req, res) => {
           if (email) {
             const user = await User.findOneAndUpdate(
               { email },
-              { $push: { trips: { tripData, location } } },
+              { $push: { trips: { tripData, location , costEstimation } } },
               { new: true }
             );
             if (!user) {
@@ -585,33 +591,44 @@ const openai = new OpenAI({
 
 
 
-  const soll = {
-    "tripName": "Chennai trip",
+  const soll ={
+    "tripName": "Samplebs",
     "countryName": "India",
-    "date": "2024-07-12T04:20:00.000Z",
+    "date": "2024-07-11T13:15:00.000Z",
     "numNights": 3,
-    "numPeople": 5,
+    "numPeople": 6,
     "days": [
       {
         "day": 1,
         "places": [
           {
-            "description": "Perambur, Chennai, Tamil Nadu, India",
-            "place_id": "ChIJm6CRQgVlUjoR00h7rxzlbyc",
+            "description": "Chennai, Tamil Nadu, India",
+            "place_id": "ChIJYTN9T-plUjoRM9RjaAunYW4",
             "distance": {
-              "text": "21.7 km",
-              "value": 21732
+              "text": "7.5 km",
+              "value": 7486
             },
-            "uniqueness": "Perambur is home to the Perambur Loco Works, one of the oldest and largest railway workshops in India.",
-            "mustTry": "Visit Perambur Market for some authentic South Indian street food and shop for traditional sarees and jewelry at the local shops.",
-            "about": "Perambur is a bustling residential and commercial area in Chennai, known for its vibrant markets, historic buildings, and diverse culinary scene."
+            "about": ": Chennai, formerly known as Madras, is the capital city of the Indian state of Tamil Nadu. It is known for its rich culture, vibrant music and dance scene, and stunning beach resorts.",
+            "uniqueness": ": Chennai is famous for its historical landmarks, such as the Kapaleeshwarar Temple, Marina Beach, and Fort St. George. It is also known for its delicious South Indian cuisine, especially idli, dosa, and filter coffee.",
+            "mustTry": ": Don't miss trying the authentic Chettinad cuisine at a local restaurant, exploring the bustling markets at T. Nagar, and attending a traditional Bharatanatyam dance performance in Chennai."
           },
           {
-            "description": "ICF Chennai Charter Chapter, 2nd Street, Sri Sakthi Vijayalakshmi Nagar, Gangai Nagar, Velachery, Chennai, Tamil Nadu, India",
-            "place_id": "ChIJq6o2aYldUjoRZpp9UWU7w-I",
-            "uniqueness": "The center hosts regular events, workshops, and performances, promoting local talent and fostering a sense of community spirit.",
-            "mustTry": "Attend a cultural event or workshop at the ICF Chennai Charter Chapter to experience the vibrant arts and culture scene in Velachery.",
-            "about": "The ICF Chennai Charter Chapter is a popular community center in Velachery, offering a range of cultural and recreational activities for residents."
+            "description": "Ayanavaram, Chennai, Tamil Nadu, India",
+            "place_id": "ChIJaWCvBElkUjoRHrLW7UqD34I",
+            "distance": {
+              "text": "3.6 km",
+              "value": 3594
+            },
+            "about": ": Ayanavaram is a bustling neighborhood in Chennai known for its lively atmosphere and diverse community. It is located in the northern part of the city and is a mix of residential and commercial areas.",
+            "uniqueness": ": Ayanavaram is known for its traditional South Indian street food, vibrant street markets, and cultural events. The area has a strong sense of community and is popular among locals for its friendly atmosphere.",
+            "mustTry": ": Visit the Ayanavaram market to try local snacks like vada pav and chaat, explore the colorful temples in the area, and attend a traditional music concert at a local venue."
+          },
+          {
+            "description": "Purasawalkam High Road, Purasaiwakkam, Chennai, Tamil Nadu, India",
+            "place_id": "EkFQdXJhc2F3YWxrYW0gSGlnaCBSb2FkLCBQdXJhc2Fpd2Fra2FtLCBDaGVubmFpLCBUYW1pbCBOYWR1LCBJbmRpYSIuKiwKFAoSCaU04wzeZVI6EWJYcaL5DtVcEhQKEgkJb4Ch3GVSOhH0K9hahwF-Kw",
+            "about": ": Purasaiwakkam is a bustling commercial and residential area in Chennai, known for its shopping streets, vibrant markets, and cultural landmarks. Purasawalkam High Road is a major thoroughfare in the neighborhood.",
+            "uniqueness": ": Purasaiwakkam is known for its traditional silk saree shops, antique jewelry stores, and street food vendors serving authentic Tamil cuisine. The area has a mix of old-world charm and modern amenities, making it a popular destination for shoppers and food enthusiasts.",
+            "mustTry": ": Explore the bustling streets of Purasaiwakkam to shop for traditional silk sarees, indulge in street food delights like dosa and bajji, and visit the historic Vadapalani temple located nearby."
           }
         ]
       },
@@ -619,33 +636,33 @@ const openai = new OpenAI({
         "day": 2,
         "places": [
           {
-            "description": "VIT Chennai, Kelambakkam - Vandalur Road, Rajan Nagar, Chennai, Tamil Nadu, India",
-            "place_id": "ChIJZx9Jjq9ZUjoRLX11GxNCS5Q",
+            "description": "Ooty, Tamil Nadu, India",
+            "place_id": "ChIJjdfztYS9qDsRQj8-yRTbmxc",
             "distance": {
-              "text": "12.9 km",
-              "value": 12942
+              "text": "250 km",
+              "value": 250213
             },
-            "uniqueness": "The campus boasts state-of-the-art labs, research centers, and recreational facilities, providing students with a holistic learning experience.",
-            "mustTry": "Take a campus tour of VIT Chennai to explore the modern infrastructure, lush greenery, and vibrant student life.",
-            "about": "VIT Chennai is a prestigious educational institution known for its world-class facilities and quality education in various fields."
+            "about": ": Ooty, also known as Udhagamandalam, is a charming hill station located in the Nilgiri Hills of Tamil Nadu. It is famous for its cool climate, beautiful landscapes, and lush tea plantations.",
+            "uniqueness": ": Ooty is known for its picturesque lakes like Ooty Lake and Emerald Lake, as well as its stunning botanical gardens and scenic mountain views. The hill station is a popular honeymoon destination and a favorite among nature lovers.",
+            "mustTry": ": Take a ride on the Nilgiri Mountain Railway, explore the sprawling Government Botanical Garden, and go boating on the tranquil Ooty Lake for a memorable experience in Ooty."
           },
           {
-            "description": "Vandalur, Tamil Nadu, India",
-            "place_id": "ChIJy7t0xgn2UjoRM_bhnwg2rB8",
+            "description": "Kodaikanal, Tamil Nadu, India",
+            "place_id": "ChIJhwMKf2NmBzsRPMFYNzfp-p8",
             "distance": {
-              "text": "7.3 km",
-              "value": 7252
+              "text": "290 km",
+              "value": 290362
             },
-            "uniqueness": "Vandalur is known for its rich cultural heritage, ancient temples, and natural beauty, making it a popular destination for nature lovers and history enthusiasts.",
-            "mustTry": "Visit the Arignar Anna Zoological Park in Vandalur to see a diverse range of wildlife species, including endangered and rare animals.",
-            "about": "Vandalur is a historic town in Tamil Nadu, home to the Arignar Anna Zoological Park, one of the largest zoos in South Asia."
+            "about": ": Kodaikanal is a serene hill station located in the Western Ghats of Tamil Nadu. Known for its cool climate, misty hills, and lush forests, Kodaikanal is a popular retreat for travelers seeking relaxation and natural beauty.",
+            "uniqueness": ": Kodaikanal is known for its scenic attractions like the Kodaikanal Lake, Coaker's Walk, and Pillar Rocks. The hill station is also famous for its homemade chocolates, eucalyptus oil products, and handicrafts made by local artisans.",
+            "mustTry": ": Take a leisurely boat ride on Kodaikanal Lake, hike to Dolphin's Nose for panoramic views of the valley, and try the delicious homemade chocolates at local shops for a sweet treat."
           },
           {
-            "description": "Tambaram, Chennai, Tamil Nadu, India",
-            "place_id": "ChIJD61KhBRfUjoR1DjOxGY6beE",
-            "uniqueness": "Tambaram is a major transportation hub, with a busy railway station and bus terminus connecting the neighborhood to other parts of the city.",
-            "mustTry": "Explore Tambaram Market for some authentic South Indian street food, shop for traditional silk sarees at the local stores, and visit the Tambaram Air Force Station for a unique aviation experience.",
-            "about": "Tambaram is a bustling suburban neighborhood in Chennai, known for its vibrant markets, shopping malls, and recreational centers."
+            "description": "Yercaud, Tamil Nadu, India",
+            "place_id": "ChIJ69VHRyv0qzsR7ufVRZnNPB0",
+            "about": ": Yercaud is a charming hill station nestled in the Eastern Ghats of Tamil Nadu. Known for its pleasant climate, scenic beauty, and tranquil ambiance, Yercaud is a hidden gem for off-the-beaten-path travelers.",
+            "uniqueness": ": Yercaud is known for its lush coffee plantations, colorful flower gardens, and panoramic viewpoints offering stunning views of the surrounding valleys. The hill station is a perfect retreat for nature lovers and adventure enthusiasts.",
+            "mustTry": ": Visit the Rose Garden to see a variety of exotic flowers, trek to the pristine Killiyur Falls for a refreshing dip, and go on a coffee plantation tour to learn about the local cultivation and processing of coffee in Yercaud."
           }
         ]
       },
@@ -653,33 +670,22 @@ const openai = new OpenAI({
         "day": 3,
         "places": [
           {
-            "description": "VIT Chennai, Kelambakkam - Vandalur Road, Rajan Nagar, Chennai, Tamil Nadu, India",
-            "place_id": "ChIJZx9Jjq9ZUjoRLX11GxNCS5Q",
+            "description": "Mumbai, Maharashtra, India",
+            "place_id": "ChIJwe1EZjDG5zsRaYxkjY_tpF0",
             "distance": {
-              "text": "12.9 km",
-              "value": 12942
+              "text": "26.1 km",
+              "value": 26085
             },
-            "uniqueness": "The campus boasts state-of-the-art labs, research centers, and recreational facilities, providing students with a holistic learning experience.",
-            "mustTry": "Take a campus tour of VIT Chennai to explore the modern infrastructure, lush greenery, and vibrant student life.",
-            "about": "VIT Chennai is a prestigious educational institution known for its world-class facilities and quality education in various fields."
+            "about": ": Mumbai, formerly known as Bombay, is the financial capital of India and a bustling metropolis known for its vibrant culture, diverse cuisine, and iconic landmarks. It is a melting pot of traditions, languages, and lifestyles.",
+            "uniqueness": ": Mumbai is known for its historic landmarks like the Gateway of India, Marine Drive, and Elephanta Caves, as well as its vibrant street food scene, bustling markets, and lively nightlife. The city is a hub of entertainment, business, and creative arts.",
+            "mustTry": ": Explore the bustling markets of Colaba Causeway and Crawford Market, indulge in street food delights like vada pav and pav bhaji, and catch a Bollywood movie screening at one of Mumbai's iconic theaters for an authentic Mumbai experience."
           },
           {
-            "description": "Vandalur, Tamil Nadu, India",
-            "place_id": "ChIJy7t0xgn2UjoRM_bhnwg2rB8",
-            "distance": {
-              "text": "7.3 km",
-              "value": 7252
-            },
-            "uniqueness": "Vandalur is known for its rich cultural heritage, ancient temples, and natural beauty, making it a popular destination for nature lovers and history enthusiasts.",
-            "mustTry": "Visit the Arignar Anna Zoological Park in Vandalur to see a diverse range of wildlife species, including endangered and rare animals.",
-            "about": "Vandalur is a historic town in Tamil Nadu, home to the Arignar Anna Zoological Park, one of the largest zoos in South Asia."
-          },
-          {
-            "description": "Tambaram, Chennai, Tamil Nadu, India",
-            "place_id": "ChIJD61KhBRfUjoR1DjOxGY6beE",
-            "uniqueness": "Tambaram is a major transportation hub, with a busy railway station and bus terminus connecting the neighborhood to other parts of the city.",
-            "mustTry": "Explore Tambaram Market for some authentic South Indian street food, shop for traditional silk sarees at the local stores, and visit the Tambaram Air Force Station for a unique aviation experience.",
-            "about": "Tambaram is a bustling suburban neighborhood in Chennai, known for its vibrant markets, shopping malls, and recreational centers."
+            "description": "CLUB AQUARIA, LIC Colony, Borivali West, Mumbai, Maharashtra, India",
+            "place_id": "ChIJzeJQAyGx5zsRNUl3Gw_5RnI",
+            "about": ": Club Aquaria is a premier recreational club located in Borivali West, Mumbai, offering a wide range of facilities and activities for its members. The club is known for its luxurious amenities, family-friendly atmosphere, and entertainment options.",
+            "uniqueness": ": Club Aquaria offers top-notch facilities like a swimming pool, gym, spa, sports courts, and restaurants, making it a one-stop destination for fitness, relaxation, and leisure activities. The club organizes events, workshops, and social gatherings for its members.",
+            "mustTry": ": Enjoy a relaxing swim in the club's indoor or outdoor pool, workout at the well-equipped gym, pamper yourself with a rejuvenating spa treatment, and dine at the club's restaurant for a memorable experience at Club Aquaria."
           }
         ]
       }
@@ -687,6 +693,52 @@ const openai = new OpenAI({
   };
 
 
+
+  const costEstimation = {
+    "detailedCosts": [
+      {
+        "day": 1,
+        "travelDistance": 21.735,
+        "travelCost": 271.6875,
+        "numRooms": 3,
+        "costPerRoom": 4000,
+        "totalAccommodationCost": 12000,
+        "foodCostPerPersonPerDay": 1000,
+        "foodCost": 5000,
+        "costPerKm": 12.5,
+        "totalCostForDay": 17271.6875
+      },
+      {
+        "day": 2,
+        "travelDistance": 20.194,
+        "travelCost": 252.42499999999998,
+        "numRooms": 3,
+        "costPerRoom": 4000,
+        "totalAccommodationCost": 12000,
+        "foodCostPerPersonPerDay": 1000,
+        "foodCost": 5000,
+        "costPerKm": 12.5,
+        "totalCostForDay": 17252.425
+      },
+      {
+        "day": 3,
+        "travelDistance": 20.194,
+        "travelCost": 252.42499999999998,
+        "numRooms": 3,
+        "costPerRoom": 4000,
+        "totalAccommodationCost": 12000,
+        "foodCostPerPersonPerDay": 1000,
+        "foodCost": 5000,
+        "costPerKm": 12.5,
+        "totalCostForDay": 17252.425
+      }
+    ],
+    "totalDistance": 62.123,
+    "totalTransportationCost": 776.5375,
+    "totalAccommodationCost": 36000,
+    "totalFoodCost": 15000,
+    "totalCost": 51776.5375
+  };
 
   app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views')); 
@@ -706,10 +758,10 @@ app.get('/', (req, res) => {
 app.get('/generate-pdf', (req, res) => {
 
 
-    const img1 = 'surya  (5).png' ||false;
-    const img2 = 'undefined_2__1_Screenshot_2024-06-28-16-24-37-008_com.google.android.gm.jpg' ||false;
+    const img1 = 'surya_2_Screenshot_2024-06-28-21-06-21-191_com.whatsapp.jpg' ||false;
+    const img2 = 'surya_2_Screenshot_2024-06-28-21-06-21-191_com.whatsapp.jpg' ||false;
     // Render the EJS template to HTML with trip data
-    app.render('template', { tripData: soll, img1: img1 ? `http://192.168.29.253:3000/uploads/${img1}` : 'No', img2: img2 ? `http://192.168.29.253:3000/uploads/${img2}` : 'No' }, (err, html) => {
+    app.render('template', {costEstimation, tripData: soll, img1: img1 ? `http://192.168.29.253:3000/uploads/${img1}` : 'No', img2: img2 ? `http://192.168.29.253:3000/uploads/${img2}` : 'No' }, (err, html) => {
         if (err) {
             res.status(500).send('Error rendering template');
             return;
@@ -882,12 +934,165 @@ app.post('/getUserData', async (req, res) => {
   }
 });
 
+// function calculateTotalCost(data, costPerKm, roomCostPerNight, foodCostPerDayPerPerson) {
+//   console.log(JSON.stringify(data, null, 2));
+//   let totalDistance = 0;
+//   let totalAccommodationCost = 0;
+//   let totalFoodCost = 0;
 
+//   console.log("Detailed Cost Breakdown:");
+
+//   data.days.forEach((day, dayIndex) => {
+//     let dayDistance = 0;
+//     let dayAccommodationCost = 0;
+//     let dayFoodCost = 0;
+
+//     day.places.forEach(place => {
+//       if (place.distance && place.distance.value) {
+//         dayDistance += place.distance.value;
+//       }
+//     });
+//     totalDistance += dayDistance;
+
+//     // Calculate accommodation cost
+//     const numRooms = Math.ceil(data.numPeople / 2); // Assuming 2 people per room
+//     dayAccommodationCost = roomCostPerNight * numRooms;
+//     totalAccommodationCost += dayAccommodationCost;
+
+//     // Calculate food cost
+//     dayFoodCost = foodCostPerDayPerPerson * data.numPeople;
+//     totalFoodCost += dayFoodCost;
+
+//     console.log(`Day ${dayIndex + 1}:`);
+//     console.log(`  Travel Distance: ${dayDistance/1000} meters`);
+//     console.log(`  Travel Cost: ${(dayDistance/1000) * costPerKm} (cost per km: ${costPerKm})`);
+//     console.log(`  Number of Rooms: ${numRooms}`);
+//     console.log(`  Cost per Room: ${roomCostPerNight}`);
+//     console.log(`  Total Accommodation Cost for the Day: ${dayAccommodationCost}`);
+//     console.log(`  Food Cost for the Day: ${dayFoodCost}`);
+//     console.log("");
+//   });
+
+//   // Calculate total transportation cost
+//   const totalTransportationCost = (totalDistance/1000) * costPerKm;
+
+//   // Calculate total cost
+//   const totalCost = totalTransportationCost + totalAccommodationCost + totalFoodCost;
+
+//   // Log total costs
+//   console.log("Total Cost Breakdown:");
+//   console.log(`  Total Travel Distance: ${totalDistance} meters`);
+//   console.log(`  Total Transportation Cost: ${totalTransportationCost}`);
+//   console.log(`  Total Accommodation Cost: ${totalAccommodationCost}`);
+//   console.log(`  Total Food Cost: ${totalFoodCost}`);
+//   console.log(`  Total Overall Cost: ${totalCost}`);
+
+//   return {
+//     totalDistance,
+//     totalTransportationCost,
+//     totalAccommodationCost,
+//     totalFoodCost,
+//     totalCost
+//   };
+// }
+
+function calculateTotalCost(data, costPerKm, roomCostPerNight, foodCostPerDayPerPerson) {
+  //console.log(JSON.stringify(data, null, 2));
+  let totalDistance = 0;
+  let totalAccommodationCost = 0;
+  let totalFoodCost = 0;
+  let detailedCosts = [];
+
+  //console.log("Detailed Cost Breakdown:");
+
+  data.days.forEach((day, dayIndex) => {
+    let dayDistance = 0;
+    let dayAccommodationCost = 0;
+    let dayFoodCost = 0;
+
+    day.places.forEach(place => {
+      if (place.distance && place.distance.value) {
+        dayDistance += place.distance.value;
+      }
+    });
+    totalDistance += dayDistance;
+
+    // Calculate accommodation cost
+    const numRooms = Math.ceil(data.numPeople / 2); // Assuming 2 people per room
+    dayAccommodationCost = roomCostPerNight * numRooms;
+    totalAccommodationCost += dayAccommodationCost;
+
+    // Calculate food cost
+    dayFoodCost = foodCostPerDayPerPerson * data.numPeople;
+    totalFoodCost += dayFoodCost;
+
+    // Calculate total cost for the day
+    const dayTravelCost = (dayDistance / 1000) * costPerKm; // Convert meters to kilometers
+    const totalCostForDay = dayTravelCost + dayAccommodationCost + dayFoodCost;
+
+    // Collect detailed cost information for the day
+    const dayCostDetails = {
+      day: dayIndex + 1,
+      travelDistance: dayDistance / 1000, // Convert meters to kilometers
+      travelCost: dayTravelCost,
+      numRooms: numRooms,
+      costPerRoom: roomCostPerNight,
+      totalAccommodationCost: dayAccommodationCost,
+      foodCostPerPersonPerDay: foodCostPerDayPerPerson,
+      foodCost: dayFoodCost,
+      costPerKm: costPerKm,
+      totalCostForDay: totalCostForDay
+    };
+    detailedCosts.push(dayCostDetails);
+
+    // console.log(`Day ${dayIndex + 1}:`);
+    // console.log(`  Travel Distance: ${dayCostDetails.travelDistance} kilometers`);
+    // console.log(`  Travel Cost: ${dayCostDetails.travelCost} (cost per km: ${costPerKm})`);
+    // console.log(`  Number of Rooms: ${dayCostDetails.numRooms}`);
+    // console.log(`  Cost per Room: ${dayCostDetails.costPerRoom}`);
+    // console.log(`  Total Accommodation Cost for the Day: ${dayCostDetails.totalAccommodationCost}`);
+    // console.log(`  Food Cost per Person per Day: ${dayCostDetails.foodCostPerPersonPerDay}`);
+    // console.log(`  Food Cost for the Day: ${dayCostDetails.foodCost}`);
+    // console.log(`  Total Cost for the Day: ${dayCostDetails.totalCostForDay}`);
+    // console.log("");
+  });
+
+  // Calculate total transportation cost
+  const totalTransportationCost = (totalDistance / 1000) * costPerKm; // Convert meters to kilometers
+
+  // Calculate total cost
+  const totalCost = totalTransportationCost + totalAccommodationCost + totalFoodCost;
+
+  // // Log total costs
+  // console.log("Total Cost Breakdown:");
+  // console.log(`  Total Travel Distance: ${totalDistance / 1000} kilometers`);
+  // console.log(`  Total Transportation Cost: ${totalTransportationCost}`);
+  // console.log(`  Total Accommodation Cost: ${totalAccommodationCost}`);
+  // console.log(`  Total Food Cost: ${totalFoodCost}`);
+  // console.log(`  Total Overall Cost: ${totalCost}`);
+
+  // Return detailed cost information and total cost as JSON
+  const result = {
+    detailedCosts,
+    totalDistance: totalDistance / 1000, // Convert meters to kilometers
+    totalTransportationCost,
+    totalAccommodationCost,
+    totalFoodCost,
+    totalCost
+  };
+
+  console.log("Cost Details JSON:");
+  //console.log(JSON.stringify(result, null, 2));
+
+  return result;
+}
 
 
 app.get('/z', (req, res) => {
   console.log("h");
+  calculateTotalCost(soll, 12.5 , 4000, 1000);
   res.send('Hi, I am Su     r ya');
+  
 });
 
 

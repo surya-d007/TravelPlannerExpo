@@ -49,9 +49,9 @@
             padding: 70px;
             
             margin-top: 160px;
-            border-radius: 55px;
+            border-radius: 15px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2), 0 20px 40px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 20px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
         }
         .col-75 {
             width: 67%;
@@ -113,28 +113,34 @@
         .maps {
 
             margin-top: 27px;
-            color: #4A4A4A;
-        background-color: #F3F8FF;
-        padding: 10px;
+            
+            color: #000000;
+        background-color: #ffffff;
+        padding: 16px;
         border: 1px solid #4A4A4A; 
         padding-left: 30px;
         padding-right: 30px;
         text-align: center; /* Align text content to center */
-        text-decoration: underline;
-        border-radius: 15px;
+        
+        border-radius: 85px;
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
         }
 
         .maps a {
-            color: #4A4A4A;
-        font-size: 30px;
+            color: #000000;
+            padding-top:30px ;
+        font-size: 32px;
+        
+        text-decoration: none;
+
+        
         
         }
 
         .maps a:hover {
-        color: blue;
-        text-decoration: underline; /* Add underline on hover */
+        
+        
         }
 
         .absolute-element {
@@ -155,6 +161,23 @@
             
             
         }
+
+        .cost-details {
+      display: grid;
+      grid-template-columns: auto auto;
+      gap: 10px;
+    }
+
+    .cost-details p {
+      margin: 5px 0;
+    }
+
+    .separator {
+      grid-column: span 2;
+      text-align: center;
+      margin: 10px 0;
+      font-weight: 100;
+    }
 
         
     </style>
@@ -226,15 +249,19 @@
                         <svg width="78" height="25" viewBox="0 0 78 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M21.307 10.345V14.272H0.958V10.345H21.307ZM49.3968 10.345V14.272H29.0478V10.345H49.3968ZM58.9737 0.654999H64.8387L77.1807 12.334L64.8387 24.064H58.9737L71.3157 12.334L58.9737 0.654999Z" fill="#4A4A4A"/>
                             </svg>  
+                            
                     </div>
                 </div>
 
                 <div class="col-15 maps">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Google&query_place_id=<%= place.place_id %>" class="place-link" target="_blank">View Location in Maps</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Google&query_place_id=<%= place.place_id %>" class="place-link" target="_blank" style=" text-decoration: none; padding: 10px; "  >View in Maps</a>
                 </div>
                 
 
             </div>
+
+
+            
             <% }); %>
 
 
@@ -255,23 +282,26 @@
     <div  class="card" style="margin-left: 100px; margin-right: 100px; color: #4A4A4A;">
         <h1 style="font-size: 55px; color: #605F5F; ">Day <%= day.day %>:</h1>
 
-    <% day.places.forEach(place => { %>
+    <% day.places.forEach((place,index) => { %>
             <div class="row">
                 <div >
                     <ul style="font-size: 40px; ">
                         <li>
-                            <p style="font-weight:900;"><%= place.description %></p>
+                            <p style="font-weight:900; margin: 0px;"><%= place.description %></p>
                             <p><span style="font-weight: 600;"> About : </span><%= place.about%></p>
                             <p><span style="font-weight: 600;"> Uniqueness : </span><%= place.uniqueness %></p>
                             <p><span style="font-weight: 600;"> Must try : </span><%= place.mustTry %></p>
                             
+                            <% if (index < day.places.length - 1) { %>
+                                <h1 style="font-weight: 100; text-align: center; padding: 0px;margin: 0px;">- - - - - - - - - - -</h1>
+                              <% } %>
+
+                            
+                            
+                            
                         </li>
                     </ul>
 
-                    <% if (place.distance && place.distance.text) { %>
-
-
-                    <% } %>
                 </div>
 
 
@@ -314,6 +344,62 @@
             
 
 
+    </div>
+
+
+
+
+    <div style="padding-left: 100px; padding-right: 100px;">
+        <h1>dgyvh</h1>
+        <h1 style="font-size: 65px; color: #171717; ">Estimated Budget :</h1>
+        <div style="font-size: 40px; padding-left: 190px;">
+            <p>Cost per room : 4000</p>
+            <p>Total number of rooms required :  3  (Assuming one room for 2)</p>
+            <p>Food Cost Per Person PerDay : 1000</p>
+        </div>
+
+
+        <div class="card" style="font-size: 40px ">
+            <p style="font-weight: 700;">Day 1:</p>
+
+            <div style="width: 80%; margin: 0 auto; padding: 20px;">
+    
+                <div style="display: flex; justify-content: space-between; margin: 10px 0; padding: 10px 0; border-bottom: 1px solid #ddd;">
+                  <p style="margin: 0;">Total Travelling Distance:</p>
+                  <p style="margin: 0;">21.73 kms (12.5 cost per/km)</p>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; margin: 10px 0; padding: 10px 0; border-bottom: 1px solid #ddd;">
+                  <p style="margin: 0;">Cost for Transport:</p>
+                  <p style="margin: 0;">271.6 (12.5 rupees / km)</p>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; margin: 10px 0; padding: 10px 0; border-bottom: 1px solid #ddd;">
+                  <p style="margin: 0;">Total Room Cost:</p>
+                  <p style="margin: 0;">12000 (Assuming 4000 / room)</p>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; margin: 10px 0; padding: 10px 0; border-bottom: 1px solid #ddd;">
+                  <p style="margin: 0;">Food Cost:</p>
+                  <p style="margin: 0;">5000 (Assuming 1000 / person)</p>
+                </div>
+                
+                <div style="text-align: center; font-weight: 100; margin: 10px 0; font-size: 18px;">
+                  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; margin: 10px 0; padding: 10px 0; border-bottom: 1px solid #ddd; font-weight: bold;">
+                  <p style="margin: 0;">Total Cost For Day 1:</p>
+                  <p style="margin: 0;">17271.6875</p>
+                </div>
+                
+                <div style="text-align: center; font-weight: 100; margin: 10px 0; font-size: 18px;">
+                  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                </div>
+            
+              </div>
+
+        </div>
     </div>
             
 

@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const tripSchema = new mongoose.Schema({
   tripData: Object,
   location: String,
+  costEstimation: Object
 });
 
 const userSchema = new mongoose.Schema({
