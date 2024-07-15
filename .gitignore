@@ -26,7 +26,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env*.local
+
 
 # vercel
 .vercel
@@ -37,5 +37,4 @@ next-env.d.ts
 package-lock.json
 pnpm-lock.yaml
 
-.env
-.env.local
+

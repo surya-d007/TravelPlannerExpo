@@ -234,7 +234,7 @@ async function getPlaceDetails(tripData) {
     //placesString = placesString.slice(0, -2); // Remove the trailing comma and space
     console.log(placesString);
     try {
-        const response = await axios.get(`http://192.168.29.253:3000/c/i need Description: , Uniqueness: and Must try: for each ${i-1} place in this ${placesString}`);
+        const response = await axios.get(`http://localhost:80/c/i need Description: , Uniqueness: and Must try: for each ${i-1} place in this ${placesString}`);
         console.log(response.data);
         const ans = await transformPlacesData(response.data);
         //console.log("ans :" + ans);
@@ -403,7 +403,7 @@ app.post('/api/GenerateReport', async (req, res) => {
     const name = `${tripData.tripName}_${req.body.userEmail}_${generateRandomNumber()}`;
     const OutputFileName = `${name}.pdf`;
 
-    app.render('template', {costEstimation , tripData, img1: img1 ? `http://192.168.29.253:3000/uploads/${img1}` : 'No', img2: img2 ? `http://192.168.29.253:3000/uploads/${img2}` : 'No' }, async (err, html) => {
+    app.render('template', {costEstimation , tripData, img1: img1 ? `http://localhost:80/uploads/${img1}` : 'No', img2: img2 ? `http://localhost:80/uploads/${img2}` : 'No' }, async (err, html) => {
       if (err) {
         console.log('error1');
         return res.status(500).send('Error rendering template');
@@ -694,7 +694,7 @@ const openai = new OpenAI({
 
 
 
-  const costEstimation = {
+  const costEstimation2 = {
     "detailedCosts": [
       {
         "day": 1,
@@ -751,42 +751,42 @@ app.get('/', (req, res) => {
     const img2 = 'sample.jpg' || false;
 
 
-    res.render('template', { tripData: soll, img1: img1 ? `http://192.168.29.253:3000/uploads/${img1}` : 'No', img2: img2 ? `http://192.168.29.253:3000/uploads/${img2}` : 'No' });
+    res.render('template', {costEstimation : costEstimation2, tripData: soll, img1: img1 ? `http://localhost:80/uploads/${img1}` : 'No', img2: img2 ? `http://localhost:80/uploads/${img2}` : 'No' });
 });
 
 
 app.get('/generate-pdf', (req, res) => {
 
 
-    const img1 = 'surya_2_Screenshot_2024-06-28-21-06-21-191_com.whatsapp.jpg' ||false;
-    const img2 = 'surya_2_Screenshot_2024-06-28-21-06-21-191_com.whatsapp.jpg' ||false;
-    // Render the EJS template to HTML with trip data
-    app.render('template', {costEstimation, tripData: soll, img1: img1 ? `http://192.168.29.253:3000/uploads/${img1}` : 'No', img2: img2 ? `http://192.168.29.253:3000/uploads/${img2}` : 'No' }, (err, html) => {
-        if (err) {
-            res.status(500).send('Error rendering template');
-            return;
-        }
+  const img1 = 'surya_2_Screenshot_2024-06-28-21-06-21-191_com.whatsapp.jpg' ||false;
+  const img2 = 'surya_2_Screenshot_2024-06-28-21-06-21-191_com.whatsapp.jpg' ||false;
+  // Render the EJS template to HTML with trip data
+  app.render('template', {costEstimation : costEstimation2, tripData: soll, img1: img1 ? `http://localhost:80/uploads/${img1}` : 'No', img2: img2 ? `http://localhost:80/uploads/${img2}` : 'No' }, (err, html) => {
+      if (err) {
+          res.status(500).send('Error rendering template');
+          return;
+      }
 
-        // PDF options
-        const options = {
-            format: 'A4',
-            border: '0mm',
-        };
+      // PDF options
+      const options = {
+          format: 'A4',
+          border: '0mm',
+      };
 
-        options.width = '210mm'; // Width of A4
-        options.height = '897mm'; // Height of A4
+      options.width = '210mm'; // Width of A4
+      options.height = '1300mm'; // Height of A4
 
-        // Generate PDF from HTML
-        pdf.create(html, options).toFile('./output.pdf', (err, result) => {
-            if (err) {
-                res.status(500).send('Error generating PDF');
-                return;
-            }
+      // Generate PDF from HTML
+      pdf.create(html, options).toFile('./output.pdf', (err, result) => {
+          if (err) {
+              res.status(500).send('Error generating PDF');
+              return;
+          }
 
-            // Respond to client with PDF file
-            res.sendFile(path.join(__dirname, 'output.pdf'));
-        });
-    });
+          // Respond to client with PDF file
+          res.sendFile(path.join(__dirname, 'output.pdf'));
+      });
+  });
 });
 
 
@@ -1163,7 +1163,7 @@ app.post('/forgot-password',async (req, res) => {
 
 
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT,'192.168.29.253', () => {
-    console.log(`Server is running on port http://192.168.29.253:${PORT}`);
+const PORT = process.env.PORT || 80;
+app.listen(PORT, () => {
+    console.log(`Server is running on port http://localhost:${PORT}`);
 });

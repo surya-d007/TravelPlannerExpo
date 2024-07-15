@@ -4,17 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sample Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+
     <style>
+ table {
+            width: 100%;
+            padding-left: 130px;
+            border-collapse: separate;
+            
+        }
+        th, td {
+            
+            padding-bottom: 15px;
+            text-align: left;
+        }
+        th {
+            
+        }
+        .col-40 {
+            width: 40%;
+        }
+        .col-60 {
+            width: 60%;
+        }
+
+
+        
+
+
         body {
             background-color: #F3F8FF;
-            font-family: Arial, sans-serif;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            padding-bottom: 250px;
             width: 100%;
             height: 100%;
             margin: 0;
             padding: 0;
         }
         .container {
-            width: 80%;
+            width: 70%;
             margin: 0 auto;
         }
         .my-5 {
@@ -34,11 +69,11 @@
             text-align: center;
         }
         .col-6 {
-            width: 48%;
+            width: 40%;
             float: left;
-            box-sizing: border-box;
+            
             padding: 0 15px;
-            margin-right: 4%;
+            
         }
         .col-6:last-child {
             margin-right: 0;
@@ -54,6 +89,19 @@
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 20px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
         }
         .col-75 {
+            width: 67%;
+            float: left;
+            box-sizing: border-box;
+            
+            padding-left: 140px;
+            color: #4A4A4A;
+            font-size: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center content vertically */
+            position: relative;
+        }
+        .col-50 {
             width: 67%;
             float: left;
             box-sizing: border-box;
@@ -183,7 +231,7 @@
     </style>
 </head>
 <body>
-    <div class="container my-5">
+    <div class="container my-5" style="padding-top: 100px;">
         <div class="row">
             <div class="col-12 text-center">
                 <h1 style="font-size: 90px; color: #101828;">Your Trip Report</h1>
@@ -192,14 +240,14 @@
         </div>
     </div>
 
-    <div class="container" style="font-size: 45px; color: #6C6C6C;">
+    <div class="container" style="font-size: 45px; color: #6C6C6C; margin-left: 28  0px;">
         <div class="row">
-            <div class="col-6">
+            <div class="col-6" style="width: 48%; ">
                 <p>Creator Name: <%= tripData.creatorName %></p>
                 <p>Trip Country: <%= tripData.countryName %></p>
                 <p>Starting Date: <%= new Date(tripData.date).toLocaleDateString() %></p>
             </div>
-            <div class="col-6" style="padding-left: 100px;">
+            <div class="col-6" style="width: 46; padding-left: 70px;">
                 <p>No of days: <%= tripData.days.length %></p>
                 <p>No of Nights: <%= tripData.numNights %></p>
                 <p>No of People: <%= tripData.numPeople %></p>
@@ -214,7 +262,7 @@
 <% tripData.days.forEach((day, index) => { %>
     <div style="margin-left: 100px; margin-right: 100px;">
         <div class="card">
-            <h1 style="font-size: 67px; color: #605F5F; margin-left: 70px;">Day <%= day.day %>:</h1>
+            <h1 style="font-size: 67px; color: #000000; margin-left: 70px;">Day <%= day.day %>:</h1>
 
     <% day.places.forEach(place => { %>
 
@@ -275,19 +323,19 @@
 
 
     
-    <h1 style="font-size: 65px; color: #494949; margin-left: 140px; margin-top: 300px;">More about the Places you visit</h1>
+    <h1 style="font-size: 65px; color: #000000; margin-left: 140px; margin-top: 300px;">More about the Places you visit :</h1>
     
 <% tripData.days.forEach((day, index) => { %>
 
     <div  class="card" style="margin-left: 100px; margin-right: 100px; color: #4A4A4A;">
-        <h1 style="font-size: 55px; color: #605F5F; ">Day <%= day.day %>:</h1>
+        <h1 style="font-size: 55px; color: #000000; ">Day <%= day.day %>:</h1>
 
     <% day.places.forEach((place,index) => { %>
             <div class="row">
                 <div >
                     <ul style="font-size: 40px; ">
                         <li>
-                            <p style="font-weight:900; margin: 0px;"><%= place.description %></p>
+                            <p style="font-weight:900; margin: 0px; color: #000000;"><%= place.description %></p>
                             <p><span style="font-weight: 600;"> About : </span><%= place.about%></p>
                             <p><span style="font-weight: 600;"> Uniqueness : </span><%= place.uniqueness %></p>
                             <p><span style="font-weight: 600;"> Must try : </span><%= place.mustTry %></p>
@@ -349,59 +397,108 @@
 
 
 
-    <div style="padding-left: 100px; padding-right: 100px;">
-        <h1>dgyvh</h1>
-        <h1 style="font-size: 65px; color: #171717; ">Estimated Budget :</h1>
-        <div style="font-size: 40px; padding-left: 190px;">
-            <p>Cost per room : 4000</p>
+    <div style="padding-left: 100px; padding-right: 100px; padding-top: 150px; padding-bottom: 200px;">
+        
+        <h1 style="font-size: 65px; color: #171717; padding-left: 25px;">Estimated Budget :</h1>
+        <div style="font-size: 40px; padding-left: 100px;">
+            <p>Cost per room : 4000 ₹</p>
             <p>Total number of rooms required :  3  (Assuming one room for 2)</p>
-            <p>Food Cost Per Person PerDay : 1000</p>
+            <p>Food Cost Per Person PerDay : 1000 ₹</p>
         </div>
 
 
-        <div class="card" style="font-size: 40px ">
-            <p style="font-weight: 700;">Day 1:</p>
+     
 
-            <div style="width: 80%; margin: 0 auto; padding: 20px;">
-    
-                <div style="display: flex; justify-content: space-between; margin: 10px 0; padding: 10px 0; border-bottom: 1px solid #ddd;">
-                  <p style="margin: 0;">Total Travelling Distance:</p>
-                  <p style="margin: 0;">21.73 kms (12.5 cost per/km)</p>
-                </div>
-                
-                <div style="display: flex; justify-content: space-between; margin: 10px 0; padding: 10px 0; border-bottom: 1px solid #ddd;">
-                  <p style="margin: 0;">Cost for Transport:</p>
-                  <p style="margin: 0;">271.6 (12.5 rupees / km)</p>
-                </div>
-                
-                <div style="display: flex; justify-content: space-between; margin: 10px 0; padding: 10px 0; border-bottom: 1px solid #ddd;">
-                  <p style="margin: 0;">Total Room Cost:</p>
-                  <p style="margin: 0;">12000 (Assuming 4000 / room)</p>
-                </div>
-                
-                <div style="display: flex; justify-content: space-between; margin: 10px 0; padding: 10px 0; border-bottom: 1px solid #ddd;">
-                  <p style="margin: 0;">Food Cost:</p>
-                  <p style="margin: 0;">5000 (Assuming 1000 / person)</p>
-                </div>
-                
-                <div style="text-align: center; font-weight: 100; margin: 10px 0; font-size: 18px;">
-                  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                </div>
-                
-                <div style="display: flex; justify-content: space-between; margin: 10px 0; padding: 10px 0; border-bottom: 1px solid #ddd; font-weight: bold;">
-                  <p style="margin: 0;">Total Cost For Day 1:</p>
-                  <p style="margin: 0;">17271.6875</p>
-                </div>
-                
-                <div style="text-align: center; font-weight: 100; margin: 10px 0; font-size: 18px;">
-                  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                </div>
-            
-              </div>
+        
 
+    <% costEstimation.detailedCosts.forEach(cost => { %>
+        <div class="card" style="font-size: 35px; padding-top: 35px; ">
+            <p style="font-weight: 700; font-size: 45px;">Cost for Day <%= cost.day %>:</p>
+            <table>
+                <tr>
+                    <th class="col-40"></th>
+                    <th class="col-60"></th>
+                </tr>
+                <tr style="padding-bottom: 30px;">
+                    <td style="padding-bottom: 35px;">Total Travelling Distance</td>
+                    <td style="padding-bottom: 35px;"><span style="padding-right: 30px;">:</span><%=  Math.floor(cost.travelDistance) %> kms (12.5 cost per/km)</td>
+                </tr>
+                <tr>
+                    <td>Cost for Transport</td>
+                    <td><span style="padding-right: 30px;">:</span><%=  Math.floor(cost.travelCost) %> (12.5 rupees / km)</td>
+                </tr>
+                <tr>
+                    <td>Total Room Cost</td>
+                    <td><span style="padding-right: 30px;">:</span><%=  Math.floor(cost.totalAccommodationCost) %> (Assuming 4000 / room)</td>
+                </tr>
+                <tr>
+                    <td>Food Cost</td>
+                    <td><span style="padding-right: 30px;">:</span><%=  Math.floor(cost.foodCost) %> (Assuming 1000 / person)</td>
+                </tr>
+                <tr colspan="2" style="width: 100%;">
+                    <td>
+                        - - - - - - - - - - - - - - - - - -
+                    </td>
+                    <td>
+                        - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+                    </td>
+                </tr>
+                <tr>
+                    <td>Total Cost For Day <%= cost.day %></td>
+                    <td><span style="padding-right: 30px;">:</span><%=  Math.floor(cost.totalCostForDay) %> ₹</td>
+                </tr>
+            </table>
         </div>
+        <% }); %>
+
+
+
+
+        <div class="card" style="font-size: 35px; padding-top: 35px;  border: 4 px solid #6a6a6a; ">
+            <p style="font-weight: 700; font-size: 50px;">Total Cost: </p>
+            <p><span style="font-size: 40px; font-weight: 300;">(  Excluding travel to and return travel cost  )</span></p>
+            <table>
+                <tr>
+                    <th class="col-40"></th>
+                    <th class="col-60"></th>
+                </tr>
+                <tr style="padding-bottom: 30px;">
+                    <td style="padding-bottom: 35px;">Total Travelling Distance</td>
+                    <td style="padding-bottom: 35px;"><span style="padding-right: 30px;">:</span><%=  Math.floor(costEstimation.totalDistance) %> kms (12.5 cost per/km)</td>
+                </tr>
+                <tr>
+                    <td>Cost for Transport</td>
+                    <td><span style="padding-right: 30px;">:</span><%=  Math.floor(costEstimation.totalTransportationCost) %> (12.5 rupees / km)</td>
+                </tr>
+                <tr>
+                    <td>Total Room Cost</td>
+                    <td><span style="padding-right: 30px;">:</span><%=  Math.floor(costEstimation.totalAccommodationCost) %> (Assuming 4000 / room)</td>
+                </tr>
+                <tr>
+                    <td>Food Cost</td>
+                    <td><span style="padding-right: 30px;">:</span><%=  Math.floor(costEstimation.totalFoodCost) %> (Assuming 1000 / person)</td>
+                </tr>
+                <tr colspan="2" style="width: 100%;">
+                    <td>
+                        - - - - - - - - - - - - - - - - - -
+                    </td>
+                    <td>
+                        - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+                    </td>
+                </tr>
+                <tr style="font-weight: 900;">
+                    <td>Total Cost For the Trip</td>
+                    <td><span style="padding-right: 30px;">:</span><%=  Math.floor(costEstimation.totalCost) %> ₹</td>
+                </tr>
+            </table>
+        </div>
+
+
+        
+
     </div>
             
+
 
 
     
