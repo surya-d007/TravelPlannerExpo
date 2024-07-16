@@ -22,7 +22,7 @@ const jwt = require('jsonwebtoken');
 const User = require('./model/userDataModel'); 
 
 
-mongoose.connect('mongodb+srv://surya-007:abcd1234@cluster0.e95bgae.mongodb.net/TravelGen?retryWrites=true&w=majority', {
+mongoose.connect(process.env.MONGOAPI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
